@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/node": "^14.14.37",
     "@types/react": "^17.0.3",
+    "axios": "^0.21.1",
     "clsx": "^1.1.1",
     "next": "10.0.9",
     "node-sass": "^5.0.0",

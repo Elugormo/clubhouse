@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import clsx from "clsx";
 
 import styles from "./EnterPhoneStep.module.scss";
 import { WhiteBlock } from "../../WhiteBlock";
 import NumberFormat from "react-number-format";
 import { Button } from "../../Button";
+import { StepInfo } from "../../StepInfo";
+import { MainContext } from "../../../pages";
+
+type InputValueState = {
+  formattedValue: string;
+  value: string;
+};
 
 export const EnterPhoneStep = () => {
-  const [inputValue, setInputValue] = useState({});
+  const { onNextStep } = useContext(MainContext);
+  const [inputValue, setInputValue] = useState<InputValueState>(
+    {} as InputValueState
+  );
 
   const nextDisabled =
     !inputValue.formattedValue || inputValue.formattedValue.includes("_");
 
   return (
     <div className={styles.block}>
-      <StepIcon
+      <StepInfo
         icon="/static/phone.png"
         title="Enter your phone #"
         description="We will send you a confirmation code"
@@ -28,10 +38,12 @@ export const EnterPhoneStep = () => {
             mask="_"
             placeholder="+7 (999) 333-22-11"
             value={inputValue.value}
-            onValueChange={(values) => setInputValue(values)}
+            onValueChange={({ formattedValue, value }) =>
+              setInputValue({ formattedValue, value })
+            }
           />
         </div>
-        <Button disabled={nextDisabled}>
+        <Button disabled={nextDisabled} onClick={onNextStep}>
           Next
           <img className="d-ib ml-10" src="/static/arrow.svg" />
         </Button>
