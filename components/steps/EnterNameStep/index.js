@@ -1,14 +1,14 @@
 import clsx from "clsx";
 import { Button } from "../../Button";
 import { WhiteBlock } from "../../WhiteBlock";
-
+import { StepInfo } from "../../StepInfo";
 import styles from "./EnterNameStep.module.scss";
 
 export const EnterNameStep = () => {
   return (
     <div className={styles.block}>
       <StepInfo
-        icon="/static/man.png"
+        icon="/static/nameStepIcon.png"
         title="What's your full name?"
         description="People use real names on Clubhouse :) Thnx!"
       />
