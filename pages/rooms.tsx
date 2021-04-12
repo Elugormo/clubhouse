@@ -1,3 +1,12 @@
+import { Header } from "../components/Header";
+
 export default function Rooms() {
-  return <h1>Rooms</h1>;
+  return (
+    <>
+      <Header />
+      <div className="container">
+        <h1>Rooms</h1>
+      </div>
+    </>
+  );
 }
