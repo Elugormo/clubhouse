@@ -20,7 +20,11 @@ export const Header: React.FC = () => {
         <Link href="/profile/1">
           <div className="d-flex align-items-center cup">
             <b className="mr-5">Yanovych Ivan</b>
-            <Avatar src="" width="50px" height="50px" />
+            <Avatar
+              src="https://avatars.githubusercontent.com/u/53963530?v=4"
+              width="50px"
+              height="50px"
+            />
           </div>
         </Link>
       </div>
