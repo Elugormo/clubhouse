@@ -34,7 +34,7 @@ export const ChooseAvatarStep: React.FC = () => {
       <StepInfo
         icon="/static/celebration.png"
         title="Okay, Yanovych Ivan!"
-        description="How's this photo?"
+        description="How’s this photo?"
       />
       <WhiteBlock className={clsx("m-auto mt-40", styles.whiteBlock)}>
         <div className={styles.avatar}>
@@ -46,7 +46,6 @@ export const ChooseAvatarStep: React.FC = () => {
           </label>
         </div>
         <input id="image" ref={inputFileRef} type="file" hidden />
-
         <Button onClick={onNextStep}>
           Next
           <img className="d-ib ml-10" src="/static/arrow.svg" />

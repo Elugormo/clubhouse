@@ -13,7 +13,7 @@ type InputValueState = {
   value: string;
 };
 
-export const EnterPhoneStep = () => {
+export const EnterPhoneStep: React.FC = () => {
   const { onNextStep } = useContext(MainContext);
   const [inputValue, setInputValue] = useState<InputValueState>(
     {} as InputValueState
@@ -31,12 +31,12 @@ export const EnterPhoneStep = () => {
       />
       <WhiteBlock className={clsx("m-auto mt-30", styles.whiteBlock)}>
         <div className={clsx("mb-30", styles.input)}>
-          <img src="/static/russian-flag.png" alt="flag" width={24} />
+          <img src="/static/ukrainian-flag.png" alt="flag" width={24} />
           <NumberFormat
             className="field"
             format="+# (###) ###-##-##"
             mask="_"
-            placeholder="+7 (999) 333-22-11"
+            placeholder="+38 (099) 333-22-11"
             value={inputValue.value}
             onValueChange={({ formattedValue, value }) =>
               setInputValue({ formattedValue, value })
