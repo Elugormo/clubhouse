@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { Button } from "../components/Button";
 import { ConversationCard } from "../components/ConversationCard";
 import { Header } from "../components/Header";
-
-export default function RoomsPage() {
+import Axios from "../core/axios";
+export default function RoomsPage({ rooms = [] }) {
   return (
     <>
       <Header />
@@ -11,19 +12,40 @@ export default function RoomsPage() {
           <h1>All conversations</h1>
           <Button color="green">+ Start room</Button>
         </div>
-        <div className="mt-20">
-          <ConversationCard
-            title="Observing stuff"
-            avatars={[
-              "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-            ]}
-            guests={["Amon Bower", "Natasha White", "Alina Grey"]}
-            speakersCount={3}
-            guestsCount={44}
-          />
+        <div className="grid mt-30">
+          {rooms.map((obj) => (
+            <Link key={obj.id} href={`/rooms/${obj.id}`}>
+              <a className="d-flex">
+                <ConversationCard
+                  title={obj.title}
+                  avatars={obj.avatars}
+                  guests={obj.guests}
+                  guestsCount={obj.guestsCount}
+                  speakersCount={obj.speakersCount}
+                />
+              </a>
+            </Link>
+          ))}
         </div>
       </div>
     </>
   );
 }
+
+export const getServerSideProps = async () => {
+  try {
+    const { data } = await Axios.get("/rooms.json");
+    return {
+      props: {
+        rooms: data,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      props: {
+        rooms: [],
+      },
+    };
+  }
+};
