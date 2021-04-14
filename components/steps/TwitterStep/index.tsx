@@ -3,11 +3,32 @@ import { Button } from "../../Button";
 import { WhiteBlock } from "../../WhiteBlock";
 import { StepInfo } from "../../StepInfo";
 import styles from "./TwitterStep.module.scss";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MainContext } from "../../../pages";
 
 export const TwitterStep: React.FC = () => {
   const { onNextStep } = useContext(MainContext);
+
+  const onClickAuth = () => {
+    const win = window.open(
+      "http://localhost:3001/auth/github",
+      "Auth",
+      "width=500,height=500,status=yes,toolbar=no,menubar=no,location=no"
+    );
+
+    const timer = setInterval(() => {
+      if (win.closed) {
+        clearInterval(timer);
+        onNextStep();
+      }
+    }, 100);
+  };
+
+  useEffect(() => {
+    window.addEventListener("message", (data) => {
+      console.log(data);
+    });
+  }, []);
 
   return (
     <div className={styles.block}>
@@ -33,7 +54,7 @@ export const TwitterStep: React.FC = () => {
           </svg>
         </div>
         <h2 className="mb-40">Ivan Yanovych</h2>
-        <Button onClick={onNextStep}>
+        <Button onClick={onClickAuth}>
           <img
             src="/static/twitter.svg"
             alt="Twitter logo"

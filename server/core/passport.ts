@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as GithubStrategy } from "passport-github";
-
+import { User } from '../../models/user';
 passport.use(
   "github",
   new GithubStrategy(
@@ -18,6 +18,19 @@ passport.use(
           username: profile.username,
           phone: "",
         };
+
+        const findUser = await User.findOne({
+          where: {
+            username: obj.username,
+          },
+        });
+
+        if (!findUser) {
+          const user = await User.create(obj);
+          return done(null, user.toJSON());
+        }
+
+        done(null, findUser);
       } catch (error) {
         done(error);
       }
@@ -25,8 +38,14 @@ passport.use(
   )
 );
 
-passport.serializeUser(function (user, done) {});
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
 
-passport.deserializeUser(function (id, done) {});
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    err ? done(err) : done(null, user);
+  });
+});
 
 export { passport };

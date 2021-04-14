@@ -14,7 +14,7 @@ export default function RoomsPage({ rooms = [] }) {
         </div>
         <div className="grid mt-30">
           {rooms.map((obj) => (
-            <Link key={obj.id} href={`/rooms/${obj.id}`}>
+            <Link  key={obj.id} href={`/rooms/${obj.id}`}>
               <a className="d-flex">
                 <ConversationCard
                   title={obj.title}
