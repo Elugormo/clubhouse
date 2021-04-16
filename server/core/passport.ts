@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as GithubStrategy } from "passport-github";
-import { User } from '../../models/user';
+const User = require("../../models").User;
 passport.use(
   "github",
   new GithubStrategy(
@@ -18,7 +18,7 @@ passport.use(
           username: profile.username,
           phone: "",
         };
-
+        console.log(User);
         const findUser = await User.findOne({
           where: {
             username: obj.username,
