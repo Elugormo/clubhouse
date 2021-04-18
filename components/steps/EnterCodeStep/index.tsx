@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { StepInfo } from "../../StepInfo";
 import { WhiteBlock } from "../../WhiteBlock";
 import { Button } from "../../Button";
-import Axios from "../../../core/axios";
+import { Axios } from "../../../core/axios";
 import { useRouter } from "next/router";
 
 import styles from "./EnterCodeStep.module.scss";
@@ -24,16 +24,19 @@ export const EnterCodeStep: React.FC = () => {
     });
     if (event.target.nextSibling) {
       (event.target.nextSibling as HTMLInputElement).focus();
+    } else {
+      onSubmit([...codes, value].join(""));
     }
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (code: string) => {
     try {
       setIsLoading(true);
-      await Axios.get("/todos");
+      await Axios.get(`/auth/sms/activate?code=${code}`);
       router.push("/rooms");
     } catch (err) {
       alert("Activation error");
+      setCodes(["", "", "", ""]);
     }
 
     setIsLoading(false);
@@ -45,7 +48,7 @@ export const EnterCodeStep: React.FC = () => {
       {!isLoading ? (
         <>
           <WhiteBlock className={clsx("m-auto mt-30", styles.whiteBlock)}>
-            <div className={clsx("mb-30", styles.codeInput)}>
+            <div className={styles.codeInput}>
               {codes.map((code, idx) => (
                 <input
                   key={idx}
@@ -58,10 +61,6 @@ export const EnterCodeStep: React.FC = () => {
                 />
               ))}
             </div>
-            <Button onClick={onSubmit} disabled={nextDisabled}>
-              Next
-              <img className="d-ib ml-10" src="/static/arrow.svg" />
-            </Button>
           </WhiteBlock>
         </>
       ) : (

@@ -7,8 +7,8 @@ import { MainContext } from "../../../pages";
 import { useContext, useState } from "react";
 
 export const EnterNameStep: React.FC = () => {
-  const [inputValue, setInputValue] = useState<string>("");
-  const { onNextStep } = useContext(MainContext);
+  const { onNextStep, userData, setFieldValue } = useContext(MainContext);
+  const [inputValue, setInputValue] = useState<string>(userData.fullname);
 
   const nextDisabled = !inputValue;
 
@@ -17,6 +17,7 @@ export const EnterNameStep: React.FC = () => {
   };
 
   const onClickNextStep = () => {
+    setFieldValue("fullname", inputValue);
     onNextStep();
   };
 

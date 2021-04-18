@@ -7,6 +7,7 @@ import NumberFormat from "react-number-format";
 import { Button } from "../../Button";
 import { StepInfo } from "../../StepInfo";
 import { MainContext } from "../../../pages";
+import { Axios } from "../../../core/axios";
 
 type InputValueState = {
   formattedValue: string;
@@ -14,13 +15,26 @@ type InputValueState = {
 };
 
 export const EnterPhoneStep: React.FC = () => {
-  const { onNextStep } = useContext(MainContext);
+  const { onNextStep, setFieldValue } = useContext(MainContext);
   const [inputValue, setInputValue] = useState<InputValueState>(
     {} as InputValueState
   );
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const nextDisabled =
     !inputValue.formattedValue || inputValue.formattedValue.includes("_");
+
+  const onSubmit = async () => {
+    try {
+      setIsLoading(true);
+      await Axios.get(`/auth/sms?phone=${inputValue.value}`);
+      setFieldValue("phone", inputValue.value);
+      onNextStep();
+    } catch (err) {
+      console.warn("Error while sending SMS", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className={styles.block}>
@@ -34,7 +48,7 @@ export const EnterPhoneStep: React.FC = () => {
           <img src="/static/ukrainian-flag.png" alt="flag" width={24} />
           <NumberFormat
             className="field"
-            format="+# (###) ###-##-##"
+            format="+## (###) ###-##-##"
             mask="_"
             placeholder="+38 (099) 333-22-11"
             value={inputValue.value}
@@ -43,9 +57,15 @@ export const EnterPhoneStep: React.FC = () => {
             }
           />
         </div>
-        <Button disabled={nextDisabled} onClick={onNextStep}>
-          Next
-          <img className="d-ib ml-10" src="/static/arrow.svg" />
+        <Button disabled={isLoading || nextDisabled} onClick={onSubmit}>
+          {isLoading ? (
+            "Sending..."
+          ) : (
+            <>
+              Next
+              <img className="d-ib ml-10" src="/static/arrow.svg" />
+            </>
+          )}
         </Button>
         <p className={clsx(styles.policyText, "mt-30")}>
           By entering your number, you're agreeing to our Terms of Service and

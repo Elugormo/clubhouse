@@ -2,7 +2,7 @@ import React from "react";
 import { BackButton } from "../../components/BackButton";
 import { Header } from "../../components/Header";
 import { Room } from "../../components/Room";
-import Axios from "../../core/axios";
+import { Axios } from "../../core/axios";
 export default function RoomPage({ room }) {
   return (
     <>
