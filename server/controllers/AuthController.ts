@@ -1,7 +1,5 @@
 import express from "express";
-import { Axios } from "../../core/axios";
-const User = require("../../models").User;
-const Code = require("../../models").Code;
+import { Code, User } from "../../models";
 import { generateRandomCode } from "../../utils/generateRandomCode";
 
 class AuthController {
@@ -10,7 +8,6 @@ class AuthController {
   }
 
   authCallback(req: express.Request, res: express.Response) {
-    console.log(req.user);
     res.send(
       `<script>window.opener.postMessage('${JSON.stringify(
         req.user
@@ -55,7 +52,6 @@ class AuthController {
   }
 
   async sendSMS(req: express.Request, res: express.Response) {
-    console.log(123);
     const phone = req.query.phone;
     const userId = req.user.id;
     const smsCode = generateRandomCode();
@@ -67,23 +63,9 @@ class AuthController {
     }
 
     try {
-      await Axios.get(
-        `https://sms.ru/sms/send?api_id=${process.env.SMS_API_KEY}&to=79992234564&msg=${smsCode}`
-      );
-      //   await Axios.post(
-      //     "https://im.smsclub.mobi/sms/send",
-      //     {
-      //       phone: [phone],
-      //       message: smsCode,
-      //       src_addr: "Clubhouse",
-      //     },
-      //     {
-      //       headers: {
-      //         "Content-Type:": "application/json",
-      //         "Authorization:": "VsJD0s3CulsNG6i ",
-      //       },
-      //     }
-      //   );
+      // await Axios.get(
+      //   `https://sms.ru/sms/send?api_id=${process.env.SMS_API_KEY}&to=79992234564&msg=${smsCode}`,
+      // );
 
       const findCode = await Code.findOne({
         where: {

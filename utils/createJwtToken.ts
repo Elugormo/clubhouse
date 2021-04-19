@@ -2,13 +2,14 @@ import jwt from "jsonwebtoken";
 import { UserData } from "../pages";
 
 export const createJwtToken = (user: UserData): string => {
+  console.log(123);
   const token = jwt.sign(
     {
       data: user,
     },
-    process.env.JWT_SECRET_KEY || "",
+    "secret" || "",
     {
-      expiresIn: process.env.JWT_MAX_AGE,
+      expiresIn: "30d",
       algorithm: "HS256",
     }
   );

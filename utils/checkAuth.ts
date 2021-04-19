@@ -7,6 +7,7 @@ import { UserData } from "../pages";
 export const checkAuth = async (
   ctx: GetServerSidePropsContext
 ): Promise<UserData | null> => {
+  console.log(123);
   try {
     const cookies = Cookies.get(ctx);
     if (cookies.token) {

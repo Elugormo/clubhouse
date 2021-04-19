@@ -1,22 +1,19 @@
 import passport from "passport";
-import dotenv from "dotenv";
 import { Strategy as GithubStrategy } from "passport-github";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import { User } from "../../models";
 import { UserData } from "../../pages";
 import { createJwtToken } from "../../utils/createJwtToken";
 
-dotenv.config();
-
-const User = require("../../models").User;
-
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: "asd",
+  secretOrKey: "secret",
 };
 
 passport.use(
   "jwt",
   new JwtStrategy(opts, (jwt_payload, done) => {
+    console.log("in jwt strategy");
     done(null, jwt_payload.data);
   })
 );
@@ -40,7 +37,7 @@ passport.use(
           username: profile.username,
           phone: "",
         };
-        console.log(User);
+
         const findUser = await User.findOne({
           where: {
             username: obj.username,
