@@ -7,6 +7,7 @@ import { ChooseAvatarStep } from "../components/steps/ChooseAvatarStep";
 import { EnterPhoneStep } from "../components/steps/EnterPhoneStep";
 import { EnterCodeStep } from "../components/steps/EnterCodeStep";
 import { checkAuth } from "../utils/checkAuth";
+import { Axios } from "../core/axios";
 
 const stepsComponent = {
   0: WelcomeStep,
@@ -86,10 +87,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem(
-      "userData",
-      userData ? JSON.stringify(userData) : ""
-    );
+    if (userData) {
+      window.localStorage.setItem("userData", JSON.stringify(userData));
+      Axios.defaults.headers.Authorization = 'Bearer ' + userData.token
+    }
   });
 
   return (
