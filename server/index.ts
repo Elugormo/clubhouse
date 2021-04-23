@@ -1,15 +1,16 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import sharp from 'sharp';
-import fs from 'fs';
-import cors from 'cors';
-import { passport } from './core/passport';
-import { uploader } from './core/uploader';
+import express from "express";
+import dotenv from "dotenv";
+import sharp from "sharp";
+import fs from "fs";
+import cors from "cors";
+import { passport } from "./core/passport";
+import { uploader } from "./core/uploader";
 
-import AuthController from './controllers/AuthController';
+import AuthController from "./controllers/AuthController";
+import RoomController from "./controllers/RoomController";
 
 dotenv.config({
-  path: 'server/.env',
+  path: "server/.env",
 });
 
 const app = express();
@@ -18,26 +19,55 @@ app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 
-app.get('/auth/me', passport.authenticate('jwt', { session: false }), AuthController.getMe);
-app.get('/auth/sms', passport.authenticate('jwt', { session: false }), AuthController.sendSMS);
-app.get('/auth/github', passport.authenticate('github'));
 app.get(
-  '/auth/sms/activate',
-  passport.authenticate('jwt', { session: false }),
-  AuthController.activate,
+  "/rooms",
+  passport.authenticate("jwt", { session: false }),
+  RoomController.index
+);
+app.post(
+  "/rooms",
+  passport.authenticate("jwt", { session: false }),
+  RoomController.create
 );
 app.get(
-  '/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
-  AuthController.authCallback,
+  "/rooms/:id",
+  passport.authenticate("jwt", { session: false }),
+  RoomController.show
+);
+app.delete(
+  "/rooms/:id",
+  passport.authenticate("jwt", { session: false }),
+  RoomController.delete
 );
 
-app.post('/upload', uploader.single('photo'), (req, res) => {
+app.get(
+  "/auth/me",
+  passport.authenticate("jwt", { session: false }),
+  AuthController.getMe
+);
+app.get(
+  "/auth/sms",
+  passport.authenticate("jwt", { session: false }),
+  AuthController.sendSMS
+);
+app.get("/auth/github", passport.authenticate("github"));
+app.get(
+  "/auth/sms/activate",
+  passport.authenticate("jwt", { session: false }),
+  AuthController.activate
+);
+app.get(
+  "/auth/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  AuthController.authCallback
+);
+
+app.post("/upload", uploader.single("photo"), (req, res) => {
   const filePath = req.file.path;
   sharp(filePath)
     .resize(150, 150)
-    .toFormat('jpeg')
-    .toFile(filePath.replace('.png', '.jpeg'), (err) => {
+    .toFormat("jpeg")
+    .toFile(filePath.replace(".png", ".jpeg"), (err) => {
       if (err) {
         throw err;
       }
@@ -45,11 +75,10 @@ app.post('/upload', uploader.single('photo'), (req, res) => {
       fs.unlinkSync(filePath);
 
       res.json({
-        url: `/avatars/${req.file.filename.replace('.png', '.jpeg')}`,
+        url: `/avatars/${req.file.filename.replace(".png", ".jpeg")}`,
       });
     });
 });
-
 
 app.listen(3001, () => {
   console.log("Server is running");
