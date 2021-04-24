@@ -7,18 +7,16 @@ import { Avatar } from "../Avatar";
 
 interface ConversationCardProps {
   title: string;
-  guests: string[];
+  speakers: string[];
   avatars: string[];
-  guestsCount: number;
-  speakersCount: number;
+  listenersCount: number;
 }
 
 export const ConversationCard: React.FC<ConversationCardProps> = ({
   title,
-  guests = [],
+  speakers = [],
   avatars = [],
-  guestsCount,
-  speakersCount,
+  listenersCount,
 }) => {
   return (
     <div className={clsx(whiteBlockStyles.block, styles.card, "mb-30")}>
@@ -41,7 +39,7 @@ export const ConversationCard: React.FC<ConversationCardProps> = ({
         </div>
         <div className={clsx(styles.info, "ml-10")}>
           <ul className={styles.users}>
-            {guests.map((name, i) => (
+            {speakers.map((name, i) => (
               <li key={name + i}>
                 {name}{" "}
                 <img
@@ -55,17 +53,16 @@ export const ConversationCard: React.FC<ConversationCardProps> = ({
           </ul>
           <ul className={styles.details}>
             <li>
-              {guestsCount}{" "}
               <img
                 src="/static/user.svg"
                 alt="Users count"
                 width={12}
                 height={12}
               />
+              {listenersCount}
             </li>
 
             <li>
-              {speakersCount}{" "}
               <img
                 className="ml-5"
                 src="/static/message.svg"
@@ -73,6 +70,7 @@ export const ConversationCard: React.FC<ConversationCardProps> = ({
                 width={12}
                 height={12}
               />
+              {speakers.length}
             </li>
           </ul>
         </div>

@@ -1,4 +1,6 @@
+import { redirect } from "next/dist/next-server/server/api-utils";
 import React from "react";
+import { Api } from "../../api";
 import { BackButton } from "../../components/BackButton";
 import { Header } from "../../components/Header";
 import { Room } from "../../components/Room";
@@ -17,9 +19,8 @@ export default function RoomPage({ room }) {
 
 export const getServerSideProps = async (ctx) => {
   try {
-    const { data } = await Axios.get("/rooms.json");
     const roomId = ctx.query.id;
-    const room = data.find((obj) => obj.id === roomId);
+    const room = await Api(ctx).getRoom(roomId);
     return {
       props: {
         room,
@@ -28,8 +29,10 @@ export const getServerSideProps = async (ctx) => {
   } catch (error) {
     console.log("ERROR!");
     return {
-      props: {
-        rooms: [],
+      props: {},
+      redirect: {
+        destination: "/rooms",
+        permanent: false,
       },
     };
   }
