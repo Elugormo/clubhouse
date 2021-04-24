@@ -17,7 +17,7 @@ interface RoomPageProps {
 
 const RoomPage: NextPage<RoomPageProps> = ({ rooms }) => {
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
-
+  console.log(rooms);
   return (
     <>
       <Head>

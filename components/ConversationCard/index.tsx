@@ -18,6 +18,8 @@ export const ConversationCard: React.FC<ConversationCardProps> = ({
   avatars = [],
   listenersCount,
 }) => {
+  console.log(speakers);
+
   return (
     <div className={clsx(whiteBlockStyles.block, styles.card, "mb-30")}>
       <h4 className={styles.title}>{title}</h4>

@@ -1,9 +1,10 @@
 import express from "express";
-
+import { Room } from "../../models";
 class RoomController {
   async index(req: express.Request, res: express.Response) {
     try {
       const items = await Room.findAll();
+      console.log(items);
       res.json(items);
     } catch (error) {
       res.status(500).json({ message: "Error", error });
@@ -22,6 +23,7 @@ class RoomController {
       }
 
       const room = await Room.create(data);
+      console.log(room);
       res.status(201).json(room);
     } catch (error) {
       res.status(500).json({ message: "Error", error });
@@ -36,7 +38,7 @@ class RoomController {
         return res.status(404).json({ message: "Incorrect room ID " });
       }
 
-      const room = await Room.findByPK(roomId);
+      const room = await Room.findByPk(roomId);
 
       if (!room) {
         return res.status(404).json({ message: "Rooms is not found " });
