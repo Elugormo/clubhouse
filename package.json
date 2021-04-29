@@ -10,6 +10,7 @@
     "migrate": "npx sequelize-cli db:migrate"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.5.1",
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
     "@types/js-cookie": "^2.2.6",
@@ -31,6 +32,7 @@
     "multer": "^1.4.2",
     "nanoid": "^3.1.22",
     "next": "10.0.9",
+    "next-redux-wrapper": "^6.0.2",
     "node-sass": "^5.0.0",
     "nookies": "^2.5.2",
     "passport": "^0.4.1",
@@ -42,6 +44,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-number-format": "^4.5.3",
+    "react-redux": "^7.2.4",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
     "sharp": "^0.28.1",
