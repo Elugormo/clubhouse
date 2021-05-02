@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 import { HYDRATE } from "next-redux-wrapper";
-import { Room, RoomApi } from "../../api/RoomApi";
+import { Room, RoomApi, RoomType } from "../../api/RoomApi";
 import { Axios } from "../../core/axios";
+import { RootState } from "../types";
 
 export type RoomsSliceState = {
   items: Room[];
@@ -35,7 +35,7 @@ export const roomsSlice = createSlice({
       state.items = action.payload;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: (builder) =>
     builder
       .addCase(
         fetchCreateRoom.fulfilled.type,
@@ -45,8 +45,7 @@ export const roomsSlice = createSlice({
       )
       .addCase(HYDRATE as any, (state, action: PayloadAction<RootState>) => {
         state.items = action.payload.rooms.items;
-      });
-  },
+      }),
 });
 
 export const { setRooms } = roomsSlice.actions;

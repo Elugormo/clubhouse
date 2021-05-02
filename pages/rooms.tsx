@@ -1,24 +1,21 @@
-import Link from "next/link";
 import { Button } from "../components/Button";
-import { ConversationCard } from "../components/ConversationCard";
 import { Header } from "../components/Header";
-import { Axios } from "../core/axios";
+import { ConversationCard } from "../components/ConversationCard";
+import { StartRoomModal } from "../components/StartRoomModal";
+import Link from "next/link";
+import React from "react";
 import Head from "next/head";
 import { checkAuth } from "../utils/checkAuth";
-import { Room } from "../api/RoomApi";
-import { GetServerSideProps, NextPage } from "next";
-import { useState } from "react";
-import { StartRoomModal } from "../components/StartRoomModal";
 import { Api } from "../api";
+import { GetServerSideProps, NextPage } from "next";
 import { useSelector } from "react-redux";
 import { selectRooms } from "../redux/selectors";
 import { wrapper } from "../redux/store";
 import { setRooms } from "../redux/slices/roomSlice";
+import { setUserData } from "../redux/slices/userSlice";
 
-
-
-const RoomPage: NextPage = () => {
-  const [visibleModal, setVisibleModal] = useState(false);
+const RoomsPage: NextPage = () => {
+  const [visibleModal, setVisibleModal] = React.useState(false);
   const rooms = useSelector(selectRooms);
 
   return (
@@ -90,4 +87,4 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   }
 );
 
-export default RoomPage;
+export default RoomsPage;

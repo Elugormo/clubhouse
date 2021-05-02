@@ -9,6 +9,7 @@ import styles from "./Header.module.scss";
 
 export const Header: React.FC = () => {
   const userData = useSelector(selectUserData);
+
   return (
     <div className={styles.header}>
       <div className="container d-flex align-items-center justify-content-between">

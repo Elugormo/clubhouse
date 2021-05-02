@@ -1,16 +1,16 @@
 import clsx from "clsx";
-import { Button } from "../../Button";
 import { WhiteBlock } from "../../WhiteBlock";
+import { Button } from "../../Button";
 import { StepInfo } from "../../StepInfo";
+
 import styles from "./EnterNameStep.module.scss";
+import React from "react";
 import { MainContext } from "../../../pages";
-import { useContext, useState } from "react";
 import { Avatar } from "../../Avatar";
 
-export const EnterNameStep: React.FC = () => {
-  const { onNextStep, userData, setFieldValue } = useContext(MainContext);
-  const [inputValue, setInputValue] = useState<string>(userData.fullname);
-
+export const EnterNameStep = () => {
+  const { onNextStep, userData, setFieldValue } = React.useContext(MainContext);
+  const [inputValue, setInputValue] = React.useState<string>(userData.fullname);
   const nextDisabled = !inputValue;
 
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,13 +25,13 @@ export const EnterNameStep: React.FC = () => {
   return (
     <div className={styles.block}>
       <StepInfo
-        icon="/static/nameStepIcon.png"
-        title="What's your full name?"
+        icon="/static/man.png"
+        title="What’s your full name?"
         description="People use real names on Clubhouse :) Thnx!"
       />
       <WhiteBlock className={clsx("m-auto", styles.whiteBlock)}>
         <Avatar src={userData.avatarUrl} width="120px" height="120px" />
-        <div className="mb-30 mt-30">
+        <div className="mt-30 mb-30">
           <input
             onChange={handleChangeInput}
             value={inputValue}

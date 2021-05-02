@@ -1,8 +1,7 @@
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { Room, RoomType } from "../../api/RoomApi";
-
 import { useAsyncAction } from "../../hooks/useAction";
 import { fetchCreateRoom } from "../../redux/slices/roomSlice";
 import { Button } from "../Button";
@@ -15,15 +14,14 @@ interface StartRoomModalProps {
 
 export const StartRoomModal: React.FC<StartRoomModalProps> = ({ onClose }) => {
   const router = useRouter();
-  const [title, setTitle] = useState<string>("");
-  const [type, setType] = useState<RoomType>("open");
+  const [title, setTitle] = React.useState<string>("");
+  const [type, setType] = React.useState<RoomType>("open");
   const createRoom = useAsyncAction<any, Room>(fetchCreateRoom);
 
   const onSubmit = async () => {
     if (!title) {
-      return alert("Define room title");
+      return alert("Enter room title");
     }
-
     const data: Room = await createRoom({ title, type });
     router.push(`/rooms/${data.id}`);
   };

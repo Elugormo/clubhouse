@@ -20,12 +20,10 @@ class AuthController {
     const { code, user } = req.body;
 
     if (!code) {
-      return res.status(400).json({ message: "Введите код активации" });
+      return res.status(400).json({ message: "Enter your activation code" });
     }
 
     const whereQuery = { code, user_id: userId };
-
-    console.log(whereQuery);
 
     try {
       const findCode = await Code.findOne({
@@ -40,13 +38,13 @@ class AuthController {
         return res.send();
       } else {
         res.status(400).json({
-          message: "Код не найден",
+          message: "Code not found",
         });
       }
     } catch (error) {
       console.log(error);
       res.status(500).json({
-        message: "Ошибка при активации аккаунта",
+        message: "Error while activating account",
       });
     }
   }
@@ -56,9 +54,10 @@ class AuthController {
     const userId = req.user.id;
     // const smsCode = generateRandomCode();
     const smsCode = 1234;
+
     if (!phone) {
       return res.status(400).json({
-        message: "Номер телефона не указан",
+        message: "Telephone number is undefined",
       });
     }
 
@@ -74,7 +73,7 @@ class AuthController {
       });
 
       if (findCode) {
-        return res.status(400).json({ message: "Код уже был отправлен" });
+        return res.status(400).json({ message: "Code was sent" });
       }
 
       await Code.create({
@@ -85,7 +84,7 @@ class AuthController {
       res.status(201).send();
     } catch (error) {
       res.status(500).json({
-        message: "Ошибка при отправке СМС-кода",
+        message: "Error while sending code",
       });
     }
   }

@@ -1,12 +1,11 @@
-import { redirect } from "next/dist/next-server/server/api-utils";
 import React from "react";
 import { Api } from "../../api";
 import { BackButton } from "../../components/BackButton";
 import { Header } from "../../components/Header";
 import { Room } from "../../components/Room";
-import { Axios } from "../../core/axios";
 import { wrapper } from "../../redux/store";
 import { checkAuth } from "../../utils/checkAuth";
+
 export default function RoomPage({ room }) {
   return (
     <>
@@ -28,7 +27,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async (ctx) => {
         props: {},
         redirect: {
           permanent: false,
-          destination: '/',
+          destination: "/",
         },
       };
     }
@@ -42,11 +41,11 @@ export const getServerSideProps = wrapper.getServerSideProps(async (ctx) => {
       },
     };
   } catch (error) {
-    console.log('ERROR!');
+    console.log("ERROR!");
     return {
       props: {},
       redirect: {
-        destination: '/rooms',
+        destination: "/rooms",
         permanent: false,
       },
     };

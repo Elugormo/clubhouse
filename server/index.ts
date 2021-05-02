@@ -22,6 +22,7 @@ const io = socket(server, {
     origin: "*",
   },
 });
+
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
@@ -90,7 +91,7 @@ app.post("/upload", uploader.single("photo"), (req, res) => {
 const rooms: Record<string, any> = {};
 
 io.on("connection", (socket) => {
-  console.log("Connected to sockets", socket.id);
+  console.log("Connected to sockets!", socket.id);
 
   socket.on("CLIENT@ROOMS:JOIN", ({ user, roomId }) => {
     socket.join(`room/${roomId}`);
@@ -113,5 +114,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(3001, () => {
-  console.log("Server is running");
+  console.log("Server is running!");
 });

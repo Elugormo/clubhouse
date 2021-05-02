@@ -1,14 +1,15 @@
 import clsx from "clsx";
-import { Button } from "../../Button";
-import { WhiteBlock } from "../../WhiteBlock";
-import { StepInfo } from "../../StepInfo";
-import styles from "./GitHubStep.module.scss";
-import { useContext, useEffect } from "react";
-import { MainContext, UserData } from "../../../pages";
 import Cookies from "js-cookie";
+import { WhiteBlock } from "../../WhiteBlock";
+import { Button } from "../../Button";
+import { StepInfo } from "../../StepInfo";
+
+import styles from "./GitHubStep.module.scss";
+import React from "react";
+import { MainContext, UserData } from "../../../pages";
 
 export const GitHubStep: React.FC = () => {
-  const { onNextStep, setUserData } = useContext(MainContext);
+  const { onNextStep, setUserData } = React.useContext(MainContext);
 
   const onClickAuth = () => {
     window.open(
@@ -18,10 +19,10 @@ export const GitHubStep: React.FC = () => {
     );
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     window.addEventListener("message", ({ data, origin }) => {
       const user: string = data;
-      if (typeof user == "string" && user.includes("avatarUrl")) {
+      if (typeof user === "string" && user.includes("avatarUrl")) {
         Cookies.remove("token");
         const json: UserData = JSON.parse(user);
         setUserData(json);
@@ -38,7 +39,6 @@ export const GitHubStep: React.FC = () => {
         title="Do you want import info from GitHub?"
       />
       <WhiteBlock className={clsx("m-auto mt-40", styles.whiteBlock)}>
-        <h2 className="mb-40">Ivan Yanovych</h2>
         <Button
           onClick={onClickAuth}
           className={clsx(styles.button, "d-i-flex align-items-center")}

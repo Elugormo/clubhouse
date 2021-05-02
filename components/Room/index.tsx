@@ -1,15 +1,15 @@
 import clsx from "clsx";
 import Link from "next/link";
+import React from "react";
+import io, { Socket } from "socket.io-client";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { io, Socket } from "socket.io-client";
-import { UserData } from "../../pages";
-import { selectUserData } from "../../redux/selectors";
 import { Button } from "../Button";
-import { Speaker } from "../Speaker";
+import { Speaker, SpeakerProps } from "../Speaker";
 
 import styles from "./Room.module.scss";
+import { selectUserData } from "../../redux/selectors";
+import { useSelector } from "react-redux";
+import { UserData } from "../../pages";
 
 interface RoomProps {
   title: string;
@@ -17,12 +17,12 @@ interface RoomProps {
 
 export const Room: React.FC<RoomProps> = ({ title }) => {
   const user = useSelector(selectUserData);
-  const [users, setUsers] = useState<UserData[]>([]);
+  const [users, setUsers] = React.useState<UserData[]>([]);
 
   const router = useRouter();
-  const socketRef = useRef<Socket>();
+  const socketRef = React.useRef<Socket>();
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (typeof window !== "undefined") {
       socketRef.current = io("http://localhost:3001");
 
@@ -38,8 +38,9 @@ export const Room: React.FC<RoomProps> = ({ title }) => {
       socketRef.current.on("SERVER@ROOMS:JOIN", (allUsers) => {
         setUsers(allUsers);
       });
-    }
 
+      // setUsers((prev) => [...prev, user]);
+    }
     return () => {
       socketRef.current.disconnect();
     };

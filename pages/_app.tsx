@@ -1,6 +1,7 @@
+import "../styles/globals.scss";
+
 import React from "react";
 import App, { AppContext } from "next/app";
-import "../styles/globals.scss";
 import { wrapper } from "../redux/store";
 
 class MyApp extends App {
@@ -10,7 +11,6 @@ class MyApp extends App {
       : {};
     return { pageProps };
   }
-
   render() {
     const { Component, pageProps } = this.props;
     return <Component {...pageProps} />;
