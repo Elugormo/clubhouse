@@ -6,7 +6,7 @@ import { RoomApi } from "./RoomApi";
 
 type ApiReturnType = ReturnType<typeof UserApi> & ReturnType<typeof RoomApi>;
 
-export const Api = (ctx: GetServerSidePropsContext): ApiReturnType => {
+export const Api = (ctx): ApiReturnType => {
   const cookies = Cookies.get(ctx);
   const token = cookies.token;
 
@@ -17,5 +17,8 @@ export const Api = (ctx: GetServerSidePropsContext): ApiReturnType => {
     },
   });
 
-  return [UserApi, RoomApi].reduce((prev, f) => ({ ...prev, ...f(instance)}), {} as ApiReturnType)
+  return [UserApi, RoomApi].reduce(
+    (prev, f) => ({ ...prev, ...f(instance) }),
+    {} as ApiReturnType
+  );
 };

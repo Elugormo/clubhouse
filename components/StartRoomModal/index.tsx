@@ -15,7 +15,7 @@ export const StartRoomModal: React.FC<StartRoomModalProps> = ({ onClose }) => {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
   const [type, setType] = useState<RoomType>("open");
-
+  
   const onSubmit = async () => {
     try {
       if (!title) {
