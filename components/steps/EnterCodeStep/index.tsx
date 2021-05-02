@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import clsx from "clsx";
 import { StepInfo } from "../../StepInfo";
 import { WhiteBlock } from "../../WhiteBlock";
@@ -7,8 +7,10 @@ import { Axios } from "../../../core/axios";
 import { useRouter } from "next/router";
 
 import styles from "./EnterCodeStep.module.scss";
+import { MainContext } from "../../../pages";
 export const EnterCodeStep: React.FC = () => {
   const router = useRouter();
+  const { userData } = useContext(MainContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [codes, setCodes] = useState(["", "", "", ""]);
 
@@ -32,7 +34,10 @@ export const EnterCodeStep: React.FC = () => {
   const onSubmit = async (code: string) => {
     try {
       setIsLoading(true);
-      await Axios.get(`/auth/sms/activate?code=${code}`);
+      await Axios.post(`/auth/sms/activate`, {
+        code,
+        user: userData,
+      });
       router.push("/rooms");
     } catch (err) {
       alert("Activation error");

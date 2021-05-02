@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import sharp from "sharp";
 import fs from "fs";
+import socket from "socket.io";
+import { createServer } from "http";
 import cors from "cors";
 import { passport } from "./core/passport";
 import { uploader } from "./core/uploader";
@@ -14,7 +16,12 @@ dotenv.config({
 });
 
 const app = express();
-
+const server = createServer(app);
+const io = socket(server, {
+  cors: {
+    origin: "*",
+  },
+});
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
@@ -51,7 +58,7 @@ app.get(
   AuthController.sendSMS
 );
 app.get("/auth/github", passport.authenticate("github"));
-app.get(
+app.post(
   "/auth/sms/activate",
   passport.authenticate("jwt", { session: false }),
   AuthController.activate
@@ -80,6 +87,31 @@ app.post("/upload", uploader.single("photo"), (req, res) => {
     });
 });
 
-app.listen(3001, () => {
+const rooms: Record<string, any> = {};
+
+io.on("connection", (socket) => {
+  console.log("Connected to sockets", socket.id);
+
+  socket.on("CLIENT@ROOMS:JOIN", ({ user, roomId }) => {
+    socket.join(`room/${roomId}`);
+    rooms[socket.id] = { roomId, user };
+    socket.to(`room/${roomId}`).emit(
+      "SERVER@ROOMS:JOIN",
+      Object.values(rooms)
+        .filter((obj) => obj.roomId === roomId)
+        .map((obj) => obj.user)
+    );
+  });
+
+  socket.on("disconnect", () => {
+    if (rooms[socket.id]) {
+      const { roomId, user } = rooms[socket.id];
+      socket.broadcast.to(`room/${roomId}`).emit("SERVER@ROOMS:LEAVE", user);
+      delete rooms[socket.id];
+    }
+  });
+});
+
+server.listen(3001, () => {
   console.log("Server is running");
 });

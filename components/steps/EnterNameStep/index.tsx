@@ -5,6 +5,7 @@ import { StepInfo } from "../../StepInfo";
 import styles from "./EnterNameStep.module.scss";
 import { MainContext } from "../../../pages";
 import { useContext, useState } from "react";
+import { Avatar } from "../../Avatar";
 
 export const EnterNameStep: React.FC = () => {
   const { onNextStep, userData, setFieldValue } = useContext(MainContext);
@@ -29,7 +30,8 @@ export const EnterNameStep: React.FC = () => {
         description="People use real names on Clubhouse :) Thnx!"
       />
       <WhiteBlock className={clsx("m-auto", styles.whiteBlock)}>
-        <div className="mb-30">
+        <Avatar src={userData.avatarUrl} width="120px" height="120px" />
+        <div className="mb-30 mt-30">
           <input
             onChange={handleChangeInput}
             value={inputValue}
