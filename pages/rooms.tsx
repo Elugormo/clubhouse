@@ -13,14 +13,14 @@ import { Api } from "../api";
 import { useSelector } from "react-redux";
 import { selectRooms } from "../redux/selectors";
 import { wrapper } from "../redux/store";
+import { setRooms } from "../redux/slices/roomSlice";
 
-interface RoomPageProps {
-  rooms: Room[];
-}
+
 
 const RoomPage: NextPage = () => {
-  const [visibleModal, setVisibleModal] = useState<boolean>(false);
+  const [visibleModal, setVisibleModal] = useState(false);
   const rooms = useSelector(selectRooms);
+
   return (
     <>
       <Head>
@@ -29,7 +29,7 @@ const RoomPage: NextPage = () => {
       </Head>
       <Header />
       <div className="container">
-        <div className="mt-40 d-flex align-items-center justify-content-between">
+        <div className=" mt-40 d-flex align-items-center justify-content-between">
           <h1>All conversations</h1>
           <Button onClick={() => setVisibleModal(true)} color="green">
             + Start room
@@ -61,6 +61,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   async (ctx) => {
     try {
       const user = await checkAuth(ctx);
+
       if (!user) {
         return {
           props: {},
@@ -73,13 +74,13 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
 
       const rooms = await Api(ctx).getRooms();
 
+      ctx.store.dispatch(setRooms(rooms));
+
       return {
-        props: {
-          rooms,
-        },
+        props: {},
       };
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log("ERROR!");
       return {
         props: {
           rooms: [],
