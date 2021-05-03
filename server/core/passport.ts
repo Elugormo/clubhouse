@@ -13,7 +13,7 @@ const opts = {
 passport.use(
   "jwt",
   new JwtStrategy(opts, (jwt_payload, done) => {
-    console.log("in jwt strategy");
+    console.log("in jwt strategy", jwt_payload);
     done(null, jwt_payload.data);
   })
 );
@@ -50,6 +50,15 @@ passport.use(
         } else {
           userData = await findUser.toJSON();
         }
+        /* 
+        let token = createJwtToken(userData); 
+        let refreshTokne = createRefreshToken(userData); 
+        redis.set(user.id, refreshToken); 
+        if(token) { 
+          
+        }
+
+        */
 
         done(null, {
           ...userData,
