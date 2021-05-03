@@ -1,4 +1,5 @@
 import express from "express";
+import redis from "redis";
 import { Code, User } from "../../models";
 import { generateRandomCode } from "../../utils/generateRandomCode";
 
