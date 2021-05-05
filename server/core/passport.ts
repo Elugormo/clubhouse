@@ -47,8 +47,12 @@ passport.use(
         if (!findUser) {
           const user = await User.create(obj);
           userData = user.toJSON();
+          // let accessToken = createAccessToken();
+          // let refreshToken = createRefreshToken();
         } else {
           userData = await findUser.toJSON();
+          // let accessToken = createAccessToken();
+          // let refreshToken = createRefreshToken();
         }
 
         done(null, {
