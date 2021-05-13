@@ -4,18 +4,17 @@ import styles from "./ConversationCard.module.scss";
 import whiteBlockStyles from "../WhiteBlock/WhiteBlock.module.scss";
 import clsx from "clsx";
 import { Avatar } from "../Avatar";
+import { UserData } from "../../pages";
 
 interface ConversationCardProps {
   title: string;
-  speakers: string[];
-  avatars: string[];
+  speakers: UserData[];
   listenersCount: number;
 }
 
 export const ConversationCard: React.FC<ConversationCardProps> = ({
   title,
   speakers = [],
-  avatars = [],
   listenersCount,
 }) => {
   console.log(speakers);
@@ -25,14 +24,14 @@ export const ConversationCard: React.FC<ConversationCardProps> = ({
       <h4 className={styles.title}>{title}</h4>
       <div className={clsx("d-flex mt-10", styles.content)}>
         <div className={styles.avatars}>
-          {avatars.map((url, i) => (
+          {speakers.map((user, i) => (
             <Avatar
-              key={url}
+              key={user.avatarUrl}
               width="45px"
               height="45px"
-              src={url}
+              src={user.avatarUrl}
               className={
-                avatars.length > 1 && i === avatars.length - 1
+                speakers.length > 1 && i === speakers.length - 1
                   ? "lastAvatar"
                   : ""
               }
@@ -41,9 +40,9 @@ export const ConversationCard: React.FC<ConversationCardProps> = ({
         </div>
         <div className={clsx(styles.info, "ml-10")}>
           <ul className={styles.users}>
-            {speakers.map((name, i) => (
-              <li key={name + i}>
-                {name}{" "}
+            {speakers.map((user, i) => (
+              <li key={user.id}>
+                {user.fullname}{" "}
                 <img
                   src="/static/cloud.png"
                   alt="Cloud"

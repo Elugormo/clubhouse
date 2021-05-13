@@ -8,9 +8,10 @@ import cors from "cors";
 import { passport } from "./core/passport";
 import { uploader } from "./core/uploader";
 
+import { Room } from "../models";
 import AuthController from "./controllers/AuthController";
 import RoomController from "./controllers/RoomController";
-import { SocketRoom } from "../utils/getUsersFromRooms";
+import { getUsersFromRoom, SocketRoom } from "../utils/getUsersFromRooms";
 
 dotenv.config({
   path: "server/.env",
@@ -96,12 +97,10 @@ io.on("connection", (socket) => {
   socket.on("CLIENT@ROOMS:JOIN", ({ user, roomId }) => {
     socket.join(`room/${roomId}`);
     rooms[socket.id] = { roomId, user };
-    socket.to(`room/${roomId}`).emit(
-      "SERVER@ROOMS:JOIN",
-      Object.values(rooms)
-        .filter((obj) => obj.roomId === roomId)
-        .map((obj) => obj.user)
-    );
+    const speakers = getUsersFromRoom(rooms, roomId);
+    io.emit("SERVER@ROOMS:HOME", { roomId: Number(roomId), speakers });
+    io.in(`room/${roomId}`).emit("SERVER@ROOMS:JOIN", speakers);
+    Room.update({ speakers }, { where: { id: roomId } });
   });
 
   socket.on("disconnect", () => {
