@@ -10,6 +10,7 @@ import { uploader } from "./core/uploader";
 
 import AuthController from "./controllers/AuthController";
 import RoomController from "./controllers/RoomController";
+import { SocketRoom } from "../utils/getUsersFromRooms";
 
 dotenv.config({
   path: "server/.env",
@@ -88,8 +89,7 @@ app.post("/upload", uploader.single("photo"), (req, res) => {
     });
 });
 
-const rooms: Record<string, any> = {};
-
+export const rooms: SocketRoom = {};
 io.on("connection", (socket) => {
   console.log("Connected to sockets!", socket.id);
 
